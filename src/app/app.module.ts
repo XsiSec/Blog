@@ -1,21 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
 
-
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireStorageModule } from 'angularfire2/storage';
-import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire//storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module'; // picks up the material.
+import { SharedModule } from './shared/shared.module';
+import { PostsModule } from './posts/posts.module';
 
+const routes: Routes = [
+  { path: '', redirectTo: 'blog', pathMatch: 'full' },
+  { path: '', loadChildren: './posts/posts.module#PostsModule' }
 
-
+];
 @NgModule({
   declarations: [
     AppComponent
@@ -23,17 +26,16 @@ import { SharedModule } from './shared/shared.module'; // picks up the material.
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AngularFireModule.initializeApp(environment.firebase), // import the env
+    RouterModule.forRoot(routes),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
     CoreModule,
-    SharedModule
-
+    SharedModule,
+    PostsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-
-}
+export class AppModule { }
